@@ -21,8 +21,9 @@ export const headerContent = styled.div`
     hight:5rem;
   }
   nav a:not(:first-child){
-    margin-left:2rem
+    margin-left:2rem;
   }
+  
   a{
     display:inline-block;
     position:relative;
