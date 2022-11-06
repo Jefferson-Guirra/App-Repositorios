@@ -10,7 +10,20 @@ export const container = styled.main(
   padding:2rem;
   background:#17181f;
   border-radius:6px;
+  
+  .warnText{
+    color:white;
+    font-weight:bold;
+    display:flex;
+    align-items:center;
+    color:#FFB800;
+    font-size:1.1rem;
 
+    button{
+      background-color:transparent;
+      border:none;
+    }
+  }
   form{
     display:flex;
     align-items:center;
@@ -30,8 +43,8 @@ export const container = styled.main(
     input:focus{
       outline:none;
       border-color: ${props.error === '' ? '#FFB800' : '#FF3636'};
-}
     }
+  
 
     button{
       margin-left:10px;
@@ -43,17 +56,16 @@ export const container = styled.main(
       opacity:${props.value === '' ? '.8' : 'initial'}
     }
   }
-  .error{
-    color:red;
-    margin-top:0.3rem;
-    font-weight:bold;
-  }
-
-  h1{
-    color:#FFF;
-    margin-top:1.8rem;
-  }
-
+    .error{
+      color:red;
+      margin-top:0.3rem;
+      font-weight:bold;
+    }
+    
+    h1{
+      color:#FFF;
+      margin-top:1.8rem;
+    }
 `
 )
 

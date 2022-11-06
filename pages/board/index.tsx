@@ -1,5 +1,5 @@
 import { getSession } from 'next-auth/react'
-import { FiPlus, FiCalendar, FiEdit2, FiTrash, FiClock } from 'react-icons/fi'
+import { FiPlus, FiCalendar, FiEdit2, FiTrash, FiClock, FiX } from 'react-icons/fi'
 import { GetServerSideProps } from 'next'
 import Link from 'next/link'
 import * as C from './styles'
@@ -50,31 +50,14 @@ type Props = {
 const Board = ({ userLogin,list }: Props) => {
   const [input,setInput] = useState('')
   const[error,setError] = useState('')
-  const [taskList,setTaskList] = useState<Data[] | []>([])
+  const [taskList,setTaskList] = useState<Data[] | []>(JSON.parse(list))
 
-  useEffect(()=>{
-    let newList: Data[] = JSON.parse(list)
-    newList = newList.map(item => {
-      item.createdFormat = format(new Date(), 'dd MMMM yyyy')
-      return item
-    })
-    if(newList.length){
-    setTaskList(newList)
-    }
-    /*let newList:Data[] = JSON.parse(list)
-      newList = newList.map(item=>{
-        item.createdFormat = format(new Date(), 'dd MMMM yyyy')
-        return item
-      }).filter(item=>item.userId === userLogin.id)
-    console.log(newList)
-    if(newList.length){
-      setTaskList(newList)
-    }*/
-  },[])
+  const [taskEdit,setTaskEdit] = useState<Data | null> ()
+
+
   
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value)
-    console.log(e.target.value)
     if(error){
       validate(e.target.value)
     }
@@ -90,9 +73,22 @@ const Board = ({ userLogin,list }: Props) => {
       return
     }
 
+    if(taskEdit){
+      const tarefasRef = doc(db, 'tarefas', taskEdit.id)
+      setDoc(tarefasRef, { tarefa: input }, { merge: true })
+      let data = taskList
+      const taskIndex = data.findIndex(item=>item.id===taskEdit.id)
+      data[taskIndex].tarefa = input
+      setTaskList(data)
+      setTaskEdit(null)
+      setInput('')
+      return
+    }
+
     try {
       const docRef = await addDoc(collection(db, 'tarefas'), {
         created: new Date(),
+        createdFormat:format(new Date(),'dd MMMM yyyy'), 
         tarefa:input,
         userId:userLogin.id,
         nome:userLogin.nome
@@ -135,6 +131,15 @@ const Board = ({ userLogin,list }: Props) => {
     }
   }
 
+  const handleEdit = async (task:Data) =>{
+    setTaskEdit(task)
+    setInput(task.tarefa)
+  }
+  
+  const handleCancelEdit = ()=>{
+    setInput('')
+    setTaskEdit(null)
+  }
 
   return (
     <>
@@ -142,6 +147,14 @@ const Board = ({ userLogin,list }: Props) => {
         <title>Minhas Tarefas</title>
       </Head>
       <C.container error={error} value={input}>
+        {taskEdit && (
+          <span className="warnText">
+            <button onClick={handleCancelEdit}>
+              <FiX size={30} color="#FF3636" />
+            </button>
+            Você esta editando uma tarefa
+          </span>
+        )}
         <form onSubmit={handleSubmit}>
           <input
             type="text"
@@ -155,7 +168,10 @@ const Board = ({ userLogin,list }: Props) => {
           </button>
         </form>
         {error && <p className="error">{error}</p>}
-        <h1>Você tem {taskList.length} {taskList.length > 1 ? 'Tarefas': 'Tarefa'}</h1>
+        <h1>
+          Você tem {taskList.length}{' '}
+          {taskList.length > 1 ? 'Tarefas' : 'Tarefa'}
+        </h1>
         <section>
           {taskList.map(task => (
             <C.taskList key={task.id}>
@@ -170,12 +186,12 @@ const Board = ({ userLogin,list }: Props) => {
                   </div>
                 </div>
 
-                <button>
+                <button onClick={() => handleEdit(task)}>
                   <FiEdit2 size={20} color="#FFF" />
                   <span>editar</span>
                 </button>
 
-                <button onClick={()=>handleDelete(task.id)}>
+                <button onClick={() => handleDelete(task.id)}>
                   <FiTrash size={20} color="#FF3636" />
                   <span>Excluir</span>
                 </button>
