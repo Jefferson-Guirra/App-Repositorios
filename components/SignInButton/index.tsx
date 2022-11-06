@@ -5,8 +5,6 @@ import {signIn,signOut,useSession} from 'next-auth/react'
 
 export  const SignInButton = () => {
   const { data: session, status } = useSession()
-  console.log(session)
-  /*const session = false*/
   return status === 'authenticated' ? (
     <C.button type="button" onClick={() => signOut()}>
       {session.user?.image && <img

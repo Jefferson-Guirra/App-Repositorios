@@ -1,3 +1,4 @@
+import { GetStaticProps } from 'next'
 import Head from 'next/head'
 import * as C from '../styles/home'
 
@@ -26,4 +27,13 @@ export default function Home() {
       </C.container>
     </>
   )
+}
+
+export const getStaticProps:GetStaticProps=async()=>{
+  return {
+    props:{
+      
+    },
+    revalidate: 60*60 //ATUALIZA A CADA 60 MINUTOS
+  }
 }

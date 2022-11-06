@@ -1,6 +1,10 @@
-import styled from "styled-components";
-
-export const container = styled.main`
+import styled from 'styled-components'
+type containerProps = {
+  error: string
+  value: string
+}
+export const container = styled.main(
+  (props: containerProps) => `
   max-width:1120px;
   margin: 2rem auto;
   padding:2rem;
@@ -13,13 +17,20 @@ export const container = styled.main`
     justify-content:center;
 
     input{
-      width:90%;
+      width:92%;
       height:50px;
       background-color:#20212c;
-      border: 1px solid #424242;
+      border: 3px solid ${props.error === '' ? '#FFB800' : '#FF3636'};
       border-radius:6px;
       padding:3px 10px;
       color:#FFF;
+    }
+
+    input:hover,
+    input:focus{
+      outline:none;
+      border-color: ${props.error === '' ? '#FFB800' : '#FF3636'};
+}
     }
 
     button{
@@ -29,7 +40,13 @@ export const container = styled.main`
       border:none;
       background-color:#FFB800;
       border-radius:6px;
+      opacity:${props.value === '' ? '.8' : 'initial'}
     }
+  }
+  .error{
+    color:red;
+    margin-top:0.3rem;
+    font-weight:bold;
   }
 
   h1{
@@ -38,19 +55,19 @@ export const container = styled.main`
   }
 
 `
+)
 
 export const taskList = styled.article`
-  background-color:#20212c;
-  margin:1rem 0;
-  padding:0.7rem;
-  border-radius:6px;
+  background-color: #20212c;
+  margin: 1rem 0;
+  padding: 0.7rem;
+  border-radius: 6px;
 
-  p{
-    cursor:pointer;
-    color:#F2f6fc;
-    line-height:150%;
+  p {
+    cursor: pointer;
+    color: #f2f6fc;
+    line-height: 150%;
   }
-
 `
 
 export const actions = styled.div`
@@ -62,32 +79,31 @@ export const actions = styled.div`
 
   div {
     display: flex;
+    padding:0px;
+    margin-left:0px;
     justify-content: center;
     align-items: center;
     time {
       color: #ffb800;
       margin-left: 5px;
-      margin-right: 1rem;
     }
   }
   button {
     background-color: transparent;
     border: none;
-    display:flex;
-    align-items:center;
-    justify-content:center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-    button:not(:first-child){
-      margin-left:10px;
-    }
+  
     span {
-      color: #FFF;
-      cursor:pointer;
-      margin-left:.2rem;
+      color: #fff;
+      cursor: pointer;
+      margin-left: 0.2rem;
     }
 
-    span:hover{
-      filter: brightness(0.7)
+    span:hover {
+      filter: brightness(0.7);
     }
   }
 `
@@ -96,24 +112,24 @@ export const vipContainer = styled.div`
   max-width: 1120px;
   padding: 0.7rem 1rem;
   background: #17181f;
-  margin:1rem auto;
-  border-radius:6px;
+  margin: 1rem auto;
+  border-radius: 6px;
 
-  h3{
-    color:#FFB800;
-    font-size:2rem;
-    font-weight:bold;
+  h3 {
+    color: #ffb800;
+    font-size: 2rem;
+    font-weight: bold;
   }
 
-  div{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    margin-top:1rem;
+  div {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 1rem;
 
-    time{
-      color:#FFF;
-      font-size:1.4rem;
+    time {
+      color: #fff;
+      font-size: 1.4rem;
     }
   }
 `
