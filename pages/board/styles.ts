@@ -86,13 +86,12 @@ export const actions = styled.div`
   display: flex;
   width: 100%;
   flex-direction: row;
-  justify-content: space-between;
   margin-top: 1rem;
 
   div {
     display: flex;
-    padding:0px;
-    margin-left:0px;
+    padding: 0px;
+    margin-left: 0px;
     justify-content: center;
     align-items: center;
     time {
@@ -107,7 +106,6 @@ export const actions = styled.div`
     align-items: center;
     justify-content: center;
 
-  
     span {
       color: #fff;
       cursor: pointer;
@@ -117,6 +115,14 @@ export const actions = styled.div`
     span:hover {
       filter: brightness(0.7);
     }
+  }
+
+    button:nth-child(2) {
+    margin-left: 1rem;
+  }
+
+  button:nth-child(3) {
+    margin-left: auto;
   }
 `
 

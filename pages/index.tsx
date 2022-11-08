@@ -9,7 +9,9 @@ export default function Home() {
         <title>Board - Organizando suas Tarefas.</title>
       </Head>
       <C.container>
-        <img src="/images/board-user.svg" alt="ferramenta board" />
+        <div>
+          <img src="/images/board-user.svg" alt="ferramenta board" />
+        </div>
         <C.callToAction>
           <h1>
             Uma ferramenta para o seu dia a dia Escreva planeje organize-se...

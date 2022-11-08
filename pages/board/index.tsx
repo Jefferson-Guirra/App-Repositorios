@@ -24,7 +24,7 @@ type User = {
   email: string
   image: string
 }
-type Login = {
+export type Login = {
   user: User
   expires: string
   id: string
@@ -44,6 +44,7 @@ type Props = {
     nome: string
     id: string
   },
+
   list:string
 }
 
@@ -216,7 +217,7 @@ export default Board
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const session = (await getSession({ req })) as Login | null
-  if (!session?.user?.name) {
+  if (!session?.id) {
     return {
       redirect: {
         destination: '/',
@@ -247,7 +248,6 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
     })
   )
 
-  const data = JSON.stringify(list)
   
 
   const userLogin = {

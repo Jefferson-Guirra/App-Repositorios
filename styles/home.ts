@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 export const container = styled.main`
   max-width:1120px;
+  min-height: calc(100vh - 6rem);
   margin:0 auto;
   padding:0 2rem;
   display:flex;
@@ -10,6 +11,7 @@ export const container = styled.main`
   justify:content:center;
 
   img{
+    width:480px;
     margin-top:2rem;
   }
 `
