@@ -1,8 +1,20 @@
 import NextAuth from 'next-auth'
 import GithubProvider from 'next-auth/providers/github'
-import { Profile } from 'next-auth'
+import { db } from '../../../services/firebaseConnection'
+import { doc,getDoc} from 'firebase/firestore'
 const id = process.env.GITHUB_ID as string
 const secret = process.env.GITHUB_SECRET as string
+
+type VipUser = {
+  donate: boolean
+  image: string
+  lastDonate: {
+    seconds:number,
+    nanoseconds:number
+  }
+  id?: string
+}
+
 export default NextAuth({
   providers: [
     GithubProvider({
@@ -30,14 +42,26 @@ export default NextAuth({
   },*/
     async session({ session, token, user }) {
       try {
+      const refUser = doc(db, 'users', String(token.sub))
+      const dataDonate = await getDoc(refUser)
+      const vipUser = dataDonate.data() as VipUser | undefined
+
+
+
+
+
         return {
           ...session,
-          id:token.sub
+          id:token.sub,
+          vip:vipUser?.donate ? vipUser.donate : false,
+          lastDonate:vipUser?.lastDonate ? vipUser.lastDonate : null
         }
       } catch {
         return {
           ...session,
-          id: null
+          id: null,
+          vip:false,
+          lastDonate:null
         }
       }
     }

@@ -11,7 +11,11 @@ export const container = styled.main`
   justify:content:center;
 
   img{
-    width:480px;
+    width:400px;
+    margin-top:2rem;
+  }
+
+    h3{
     margin-top:2rem;
   }
 `
@@ -25,6 +29,7 @@ export const callToAction = styled.section`
     text-align: center;
     color: #141a29;
   }
+
 
   p {
     margin-top: 1rem;

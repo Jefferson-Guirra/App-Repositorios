@@ -10,15 +10,15 @@ export const container = styled.main`
   justify-content: center;
   text-align: center;
 
-  img{
-    width:100%;
+  img {
+    width: 100%;
   }
-  .rocket{
-    width:280px;
+  .rocket {
+    width: 280px;
     margin: 0 auto;
   }
   .vip {
-    color:#FFF;
+    color: #fff;
     margin-top: 1.5rem;
     width: fit-content;
     margin: 0 auto;
@@ -29,7 +29,7 @@ export const container = styled.main`
     img {
       width: 50px;
       height: 50px;
-      vertical-align:middle;
+      vertical-align: middle;
       border-radius: 50%;
       margin-right: 10px;
     }
@@ -54,7 +54,7 @@ export const container = styled.main`
     margin-bottom: 1rem;
     span {
       font-weight: bold;
-      color:#19950;
+      color: green;
     }
   }
 
@@ -66,8 +66,8 @@ export const container = styled.main`
     width: fit-content;
     margin: 0 auto;
   }
-  .paypal{
-    width:150px;
-    margin:0 auto;
+  .paypal {
+    width: 150px;
+    margin: 0 auto;
   }
 `

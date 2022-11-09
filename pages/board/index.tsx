@@ -1,5 +1,12 @@
 import { getSession } from 'next-auth/react'
-import { FiPlus, FiCalendar, FiEdit2, FiTrash, FiClock, FiX } from 'react-icons/fi'
+import {
+  FiPlus,
+  FiCalendar,
+  FiEdit2,
+  FiTrash,
+  FiClock,
+  FiX
+} from 'react-icons/fi'
 import { GetServerSideProps } from 'next'
 import Link from 'next/link'
 import * as C from './styles'
@@ -9,16 +16,27 @@ import {
   doc,
   setDoc,
   deleteDoc,
+  getDoc,
   where,
   query,
   orderBy,
   collection,
+  limit,
   addDoc,
   getDocs
-} from 'firebase/firestore' 
-import {format} from 'date-fns'
+} from 'firebase/firestore'
+import { format,formatDistance } from 'date-fns'
+import { Timestamp } from 'firebase/firestore'
+import { ptBR } from 'date-fns/locale'
 import { db } from '../../services/firebaseConnection'
-import React, { useState,FormEvent,useEffect } from 'react'
+import React, { useState, FormEvent} from 'react'
+
+type VipUser = {
+  donate: boolean
+  image: string
+  lastDonate: Date
+}
+
 type User = {
   name: string
   email: string
@@ -27,58 +45,76 @@ type User = {
 export type Login = {
   user: User
   expires: string
-  id: string
+  id: string,
+  vip:boolean,
+  lastDonate:string | null
 }
 
 type Data = {
   id: string
-  created: string |  Date
-  createdFormat ?: string
+  created: string | Date
+  createdFormat?: string
   tarefa: string
   userId: string
   nome: string
 }
-
+type LastDonate = {
+  seconds: number
+  nanoseconds: number
+}
 type Props = {
   userLogin: {
     nome: string
     id: string
-  },
+    vip: boolean | undefined
+    lastDonate:LastDonate
 
-  list:string
+  }
+  list: string
 }
 
-const Board = ({ userLogin,list }: Props) => {
-  const [input,setInput] = useState('')
-  const[error,setError] = useState('')
-  const [taskList,setTaskList] = useState<Data[] | []>(JSON.parse(list))
-
-  const [taskEdit,setTaskEdit] = useState<Data | null> ()
 
 
-  
+
+
+const Board = ({ userLogin, list }: Props) => {
+  const [input, setInput] = useState('')
+  const [error, setError] = useState('')
+  const [taskList, setTaskList] = useState<Data[] | []>(JSON.parse(list))
+  const [taskEdit, setTaskEdit] = useState<Data | null>()
+
+
+  const handleTime = (time:LastDonate) =>{
+    const timeStamp = new Timestamp(time.seconds,time.nanoseconds)
+    const timeFormat = timeStamp.toDate() as Date
+    return timeFormat
+
+  }
+
+
+
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value)
-    if(error){
+    if (error) {
       validate(e.target.value)
-    }
-    else if(e.target.value === ''){
+    } else if (e.target.value === '') {
       validate(e.target.value)
     }
   }
-  const handleSubmit = async (e:FormEvent)=>{
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
     validate(input)
-    if(input === ''){
+    if (input === '') {
       setError('Preencha com alguma tarefa')
       return
     }
 
-    if(taskEdit){
+    if (taskEdit) {
       const tarefasRef = doc(db, 'tarefas', taskEdit.id)
       setDoc(tarefasRef, { tarefa: input }, { merge: true })
       let data = taskList
-      const taskIndex = data.findIndex(item=>item.id===taskEdit.id)
+      const taskIndex = data.findIndex(item => item.id === taskEdit.id)
       data[taskIndex].tarefa = input
       setTaskList(data)
       setTaskEdit(null)
@@ -89,55 +125,52 @@ const Board = ({ userLogin,list }: Props) => {
     try {
       const docRef = await addDoc(collection(db, 'tarefas'), {
         created: new Date(),
-        createdFormat:format(new Date(),'dd MMMM yyyy'), 
-        tarefa:input,
-        userId:userLogin.id,
-        nome:userLogin.nome
+        createdFormat: format(new Date(), 'dd MMMM yyyy'),
+        tarefa: input,
+        userId: userLogin.id,
+        nome: userLogin.nome
       })
 
       let data = {
-        id:docRef.id,
+        id: docRef.id,
         created: new Date(),
-        createdFormat:format(new Date(),'dd MMMM yyyy'),
-        tarefa:input,
-        userId : userLogin.id,
-        nome:userLogin.nome
+        createdFormat: format(new Date(), 'dd MMMM yyyy'),
+        tarefa: input,
+        userId: userLogin.id,
+        nome: userLogin.nome
       }
-      setTaskList([...taskList,data])
+      setTaskList([...taskList, data])
       setInput('')
       console.log('Cadastrado com sucesso', docRef.id)
     } catch (e) {
       console.log('error ao cadastrar ', e)
     }
-
-    
   }
-  const validate = (value:string)=>{
-    if(value.length === 0){
+  const validate = (value: string) => {
+    if (value.length === 0) {
       setError('preencha com alguma tarefa')
-    }
-    else{
+    } else {
       setError('')
     }
   }
 
-  const handleDelete = async (id:string)=>{
-    try{
-      await deleteDoc(doc(db, "tarefas", id))
-      console.log('item deletado',id)
-      const deleteTaskList = taskList.filter(item=>item.id !== id)
+  const handleDelete = async (id: string) => {
+    try {
+      await deleteDoc(doc(db, 'tarefas', id))
+      console.log('item deletado', id)
+      const deleteTaskList = taskList.filter(item => item.id !== id)
       setTaskList(deleteTaskList)
-    }catch(err){
-      console.log('Error:',err)
+    } catch (err) {
+      console.log('Error:', err)
     }
   }
 
-  const handleEdit = async (task:Data) =>{
+  const handleEdit = async (task: Data) => {
     setTaskEdit(task)
     setInput(task.tarefa)
   }
-  
-  const handleCancelEdit = ()=>{
+
+  const handleCancelEdit = () => {
     setInput('')
     setTaskEdit(null)
   }
@@ -180,34 +213,40 @@ const Board = ({ userLogin,list }: Props) => {
                 <p>{task.tarefa}</p>
               </Link>
               <C.actions>
-                <div>
+
+                <div className='calendar'>
                   <div>
                     <FiCalendar size={20} color="#FFB800" />
                     <time>{task.createdFormat}</time>
+
+                    {userLogin.vip && (
+                      <button onClick={() => handleEdit(task)}>
+                        <FiEdit2 size={20} color="#FFF" />
+                        <span>editar</span>
+                      </button>
+                    )}
+
                   </div>
+
+                  <button onClick={() => handleDelete(task.id)}>
+                    <FiTrash size={20} color="#FF3636" />
+                    <span>Excluir</span>
+                  </button>
                 </div>
-
-                <button onClick={() => handleEdit(task)}>
-                  <FiEdit2 size={20} color="#FFF" />
-                  <span>editar</span>
-                </button>
-
-                <button onClick={() => handleDelete(task.id)}>
-                  <FiTrash size={20} color="#FF3636" />
-                  <span>Excluir</span>
-                </button>
               </C.actions>
             </C.taskList>
           ))}
         </section>
       </C.container>
-      <C.vipContainer>
-        <h3>Obrigado por apoiar esse projeto</h3>
-        <div>
-          <FiClock size={28} color="#FFF" />
-          <time>Última doação foi a 3 dias.</time>
-        </div>
-      </C.vipContainer>
+      {userLogin.vip&& (
+        <C.vipContainer>
+          <h3>Obrigado por apoiar esse projeto</h3>
+          <div>
+            <FiClock size={28} color="#FFF" />
+            <time>Última doação foi a {formatDistance(handleTime(userLogin.lastDonate),new Date(),{locale:ptBR})}.</time>
+          </div>
+        </C.vipContainer>
+      )}
       <SupportButton />
     </>
   )
@@ -216,7 +255,7 @@ const Board = ({ userLogin,list }: Props) => {
 export default Board
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-  const session = (await getSession({ req })) as Login | null
+  const session = await getSession({ req }) as Login | null
   if (!session?.id) {
     return {
       redirect: {
@@ -225,7 +264,6 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
       }
     }
   }
-
 
   /* Obtendo uma coleção sem ordenar os dados
   await getDocs(collection(db, 'tarefas')).then(querySnapshot => {
@@ -236,6 +274,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   })*/
 
   const ref = collection(db, 'tarefas')
+
   let list = JSON.stringify(
     await getDocs(
       query(ref, where('userId', '==', session.id), orderBy('created', 'asc'))
@@ -248,17 +287,27 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
     })
   )
 
+  /*const dataDonate = await getDoc(refUser)
+  const vipUser = dataDonate.data() as VipUser | undefined
+  const vip = vipUser?.donate ? vipUser?.donate : null*/
+
   
+
+ 
+
 
   const userLogin = {
     nome: session.user.name,
-    id: session.id
+    id: session.id,
+    vip: session.vip,
+    lastDonate: session.lastDonate
   }
 
   return {
     props: {
       userLogin,
-      list
+      list,
+      
     }
   }
 }

@@ -88,15 +88,19 @@ export const actions = styled.div`
   flex-direction: row;
   margin-top: 1rem;
 
-  div {
+  .calendar {
+    width: 100%;
     display: flex;
-    padding: 0px;
-    margin-left: 0px;
-    justify-content: center;
     align-items: center;
-    time {
-      color: #ffb800;
-      margin-left: 5px;
+    justify-content: space-between;
+    align-items: center;
+    div {
+      display: flex;
+      time {
+        color: #ffb800;
+        margin-left: 5px;
+        margin-right: 20px;
+      }
     }
   }
   button {
@@ -105,7 +109,6 @@ export const actions = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-
     span {
       color: #fff;
       cursor: pointer;
@@ -117,12 +120,8 @@ export const actions = styled.div`
     }
   }
 
-    button:nth-child(2) {
+  button:nth-child(2) {
     margin-left: 1rem;
-  }
-
-  button:nth-child(3) {
-    margin-left: auto;
   }
 `
 

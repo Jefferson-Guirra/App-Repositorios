@@ -1,8 +1,20 @@
 import { GetStaticProps } from 'next'
 import Head from 'next/head'
 import * as C from '../styles/home'
+import { collection, getDocs, orderBy, query } from 'firebase/firestore'
+import {db} from '../services/firebaseConnection'
 
-export default function Home() {
+type Props = {
+  donateUsers:string
+}
+
+type Data = {      
+    donate:boolean,
+      lastDonate:Date,
+      image:string
+}
+export default function Home({donateUsers}:Props) {
+  const usersVip:Data[] = JSON.parse(donateUsers)
   return (
     <>
       <Head>
@@ -20,21 +32,27 @@ export default function Home() {
             <span>100% gratuita</span> e online.
           </p>
         </C.callToAction>
-        <C.donaters>
-          <img src="https://sujeitoprogramador.com/steve.png" alt="usuario 1" />
-          <img src="https://sujeitoprogramador.com/steve.png" alt="usuario 2" />
-          <img src="https://sujeitoprogramador.com/steve.png" alt="usuario 3" />
-          <img src="https://sujeitoprogramador.com/steve.png" alt="usuario 4" />
-        </C.donaters>
+        {usersVip.length && <h3>Apoiadores:</h3>}
+        {usersVip.length > 0 && <C.donaters>
+          {usersVip.map((user,index)=><img key={index} src={user.image} alt='imagem do usuario'/>)}
+        </C.donaters>}
       </C.container>
     </>
   )
 }
 
 export const getStaticProps:GetStaticProps=async()=>{
+  const ref = collection(db, 'users')
+
+  const donateUsers = JSON.stringify(await getDocs(query(ref,orderBy('lastDonate','desc')))
+            .then((querySnapshot)=>{               
+                const newData = querySnapshot.docs
+                    .map((doc) => ({...doc.data(), id:doc.id }));
+                return newData
+          }))
   return {
     props:{
-      
+      donateUsers
     },
     revalidate: 60*60 //ATUALIZA A CADA 60 MINUTOS
   }

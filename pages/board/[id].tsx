@@ -56,7 +56,7 @@ export const getServerSideProps:GetServerSideProps = async ({req,params})=>{
   const session = await getSession({req}) as Login | null
 
   
-  if(!session?.id){
+  if(!session?.vip){
     return{
       redirect:{
         destination:'/board',
@@ -73,7 +73,6 @@ export const getServerSideProps:GetServerSideProps = async ({req,params})=>{
     data =docSnap.data()
     data.id = docSnap.id
     data = JSON.stringify(data)
-    console.log(docSnap.id)
   } else {
     // doc.data() will be undefined in this case
     console.log('No such document!')

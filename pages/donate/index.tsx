@@ -1,10 +1,12 @@
 import { GetServerSideProps } from "next"
+import {useState} from 'react'
 import { getSession } from "next-auth/react"
 import Head from "next/head"
 import * as C from './styles'
 import { Login } from "../board"
 import { PayPalButtons } from '@paypal/react-paypal-js'
-import {useCallback} from 'react'
+import {db} from '../../services/firebaseConnection'
+import {setDoc,doc} from 'firebase/firestore'
 
 
   type Props = {
@@ -17,8 +19,14 @@ import {useCallback} from 'react'
 //AcAcqRy0YXQo8w3nLKJBrwz7QUa14gmObIvRDEWI3Rhu_9Ua-8OSzn4tyHxBsv85X-i78aRBCoE9S7Gu
 //<script src="https://www.paypal.com/sdk/js?client-id=YOUR_CLIENT_ID"></script>
 const donate = ({user}:Props)=>{
-
-  
+  const [vip,setVip] = useState(false)
+  const handleSaveDonate = async()=>{
+    await setDoc(doc(db, 'users', user.id),{
+      donate:true,
+      lastDonate:new Date(),
+      image:user.image
+    }).then(()=>setVip(true))
+  }
   
   return (
     <>
@@ -29,10 +37,10 @@ const donate = ({user}:Props)=>{
         <div className="rocket">
           <img src="/images/rocket.svg" alt="Seja apoaidor" />
         </div>
-        <div className="vip">
+        {vip && <div className="vip">
           <img src={user.image} alt="foto de perfil do usuario" />
           <span>Parabéns você é um novo apoiador</span>
-        </div>
+        </div>}
         <h1>
           Seja um apoiador deste projeto{' '}
           <span className="thropy">
@@ -61,7 +69,8 @@ const donate = ({user}:Props)=>{
           }}
           onApprove={(data, actions) => {
             return actions.order?.capture().then(function (details) {
-              console.log('Compra aprovada: ' + details)
+              console.log('Compra aprovada: ' + details.payer.name?.given_name)
+              handleSaveDonate()
             })
           }}
         />
