@@ -2,9 +2,6 @@ import NextAuth from 'next-auth'
 import GithubProvider from 'next-auth/providers/github'
 import { db } from '../../../services/firebaseConnection'
 import { doc,getDoc} from 'firebase/firestore'
-const id = process.env.GITHUB_ID as string
-const secret = process.env.GITHUB_SECRET as string
-const secretJwt =process.env.SECRET_JWT as string
 
 type VipUser = {
   donate: boolean
@@ -19,12 +16,12 @@ type VipUser = {
 export default NextAuth({
   providers: [
     GithubProvider({
-      clientId: id,
-      clientSecret: secret,
+      clientId: process.env.GITHUB_ID as string,
+      clientSecret: process.env.GITHUB_SECRET as string,
       
     })
   ],
-  secret:secretJwt,
+  secret:process.env.SECRET_JWT as string,
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) {
       try {
