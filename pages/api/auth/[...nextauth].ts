@@ -17,11 +17,10 @@ export default NextAuth({
   providers: [
     GithubProvider({
       clientId: process.env.GITHUB_ID as string,
-      clientSecret: process.env.GITHUB_SECRET as string,
-      
+      clientSecret: process.env.GITHUB_SECRET as string
     })
   ],
-  secret:process.env.SECRET_JWT as string,
+  secret: process.env.NEXTAUTH_SECRET as string,
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) {
       try {
@@ -33,26 +32,22 @@ export default NextAuth({
     },
     async session({ session, token, user }) {
       try {
-      const refUser = doc(db, 'users', String(token.sub))
-      const dataDonate = await getDoc(refUser)
-      const vipUser = dataDonate.data() as VipUser | undefined
-
-
-
-
+        const refUser = doc(db, 'users', String(token.sub))
+        const dataDonate = await getDoc(refUser)
+        const vipUser = dataDonate.data() as VipUser | undefined
 
         return {
           ...session,
-          id:token.sub,
-          vip:vipUser?.donate ? vipUser.donate : false,
-          lastDonate:vipUser?.lastDonate ? vipUser.lastDonate : null
+          id: token.sub,
+          vip: vipUser?.donate ? vipUser.donate : false,
+          lastDonate: vipUser?.lastDonate ? vipUser.lastDonate : null
         }
       } catch {
         return {
           ...session,
           id: null,
-          vip:false,
-          lastDonate:null
+          vip: false,
+          lastDonate: null
         }
       }
     }
