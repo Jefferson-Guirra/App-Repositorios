@@ -60,7 +60,7 @@ export const getStaticProps:GetStaticProps=async()=>{
   const githubSecret = process.env.GITHUB_SECRET as string
   const urlApi = process.env.NEXTAUTH_URL as string
   const githubId = process.env.GITHUB_ID as string
-  const jwtSecret = process.env.SECRET_JWT as string
+  const jwtSecret = process.env.NEXTAUTH_SECRET as string
 
 
 
