@@ -9,7 +9,7 @@ import {
 } from 'react-icons/fi'
 import { GetServerSideProps } from 'next'
 import Link from 'next/link'
-import * as C from './styles'
+import * as C from '../../styles/board'
 import Head from 'next/head'
 import { SupportButton } from '../../components/SupportButton'
 import {
@@ -25,57 +25,19 @@ import {
   addDoc,
   getDocs
 } from 'firebase/firestore'
-import { format,formatDistance } from 'date-fns'
+import {
+  Login,
+  VipUser,
+  User,
+  Data,
+  LastDonate,
+  Props
+} from '../../types/board'
+import { format, formatDistance } from 'date-fns'
 import { Timestamp } from 'firebase/firestore'
 import { ptBR } from 'date-fns/locale'
 import { db } from '../../services/firebaseConnection'
-import React, { useState, FormEvent} from 'react'
-
-type VipUser = {
-  donate: boolean
-  image: string
-  lastDonate: Date
-}
-
-type User = {
-  name: string
-  email: string
-  image: string
-}
-export type Login = {
-  user: User
-  expires: string
-  id: string,
-  vip:boolean,
-  lastDonate:string | null
-}
-
-type Data = {
-  id: string
-  created: string | Date
-  createdFormat?: string
-  tarefa: string
-  userId: string
-  nome: string
-}
-type LastDonate = {
-  seconds: number
-  nanoseconds: number
-}
-type Props = {
-  userLogin: {
-    nome: string
-    id: string
-    vip: boolean | undefined
-    lastDonate:LastDonate
-
-  }
-  list: string
-}
-
-
-
-
+import React, { useState, FormEvent } from 'react'
 
 const Board = ({ userLogin, list }: Props) => {
   const [input, setInput] = useState('')
@@ -83,16 +45,11 @@ const Board = ({ userLogin, list }: Props) => {
   const [taskList, setTaskList] = useState<Data[] | []>(JSON.parse(list))
   const [taskEdit, setTaskEdit] = useState<Data | null>()
 
-
-  const handleTime = (time:LastDonate) =>{
-    const timeStamp = new Timestamp(time.seconds,time.nanoseconds)
+  const handleTime = (time: LastDonate) => {
+    const timeStamp = new Timestamp(time.seconds, time.nanoseconds)
     const timeFormat = timeStamp.toDate() as Date
     return timeFormat
-
   }
-
-
-
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value)
@@ -213,8 +170,7 @@ const Board = ({ userLogin, list }: Props) => {
                 <p>{task.tarefa}</p>
               </Link>
               <C.actions>
-
-                <div className='calendar'>
+                <div className="calendar">
                   <div>
                     <FiCalendar size={20} color="#FFB800" />
                     <time>{task.createdFormat}</time>
@@ -225,7 +181,6 @@ const Board = ({ userLogin, list }: Props) => {
                         <span>editar</span>
                       </button>
                     )}
-
                   </div>
 
                   <button onClick={() => handleDelete(task.id)}>
@@ -238,12 +193,18 @@ const Board = ({ userLogin, list }: Props) => {
           ))}
         </section>
       </C.container>
-      {userLogin.vip&& (
+      {userLogin.vip && (
         <C.vipContainer>
           <h3>Obrigado por apoiar esse projeto</h3>
           <div>
             <FiClock size={28} color="#FFF" />
-            <time>Última doação foi a {formatDistance(handleTime(userLogin.lastDonate),new Date(),{locale:ptBR})}.</time>
+            <time>
+              Última doação foi a{' '}
+              {formatDistance(handleTime(userLogin.lastDonate), new Date(), {
+                locale: ptBR
+              })}
+              .
+            </time>
           </div>
         </C.vipContainer>
       )}
@@ -255,7 +216,7 @@ const Board = ({ userLogin, list }: Props) => {
 export default Board
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-  const session = await getSession({ req }) as Login | null
+  const session = (await getSession({ req })) as Login | null
   if (!session?.id) {
     return {
       redirect: {
@@ -291,11 +252,6 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const vipUser = dataDonate.data() as VipUser | undefined
   const vip = vipUser?.donate ? vipUser?.donate : null*/
 
-  
-
- 
-
-
   const userLogin = {
     nome: session.user.name,
     id: session.id,
@@ -306,8 +262,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   return {
     props: {
       userLogin,
-      list,
-      
+      list
     }
   }
 }

@@ -3,6 +3,8 @@ import Head from 'next/head'
 import * as C from '../styles/home'
 import { collection, getDocs, orderBy, query } from 'firebase/firestore'
 import {db} from '../services/firebaseConnection'
+import homeImg from '../public/images/board-user.svg'
+import Image from 'next/image'
 
 type Props = {
   donateUsers:string
@@ -21,8 +23,8 @@ export default function Home({donateUsers}:Props) {
         <title>Board - Organizando suas Tarefas.</title>
       </Head>
       <C.container>
-        <div>
-          <img src="/images/board-user.svg" alt="ferramenta board" />
+        <div className="img">
+          <Image src={homeImg} width={420} alt="ferramenta board" />
         </div>
         <C.callToAction>
           <h1>
@@ -33,9 +35,16 @@ export default function Home({donateUsers}:Props) {
           </p>
         </C.callToAction>
         {usersVip.length && <h3>Apoiadores:</h3>}
-        {usersVip.length > 0 && <C.donaters>
-          {usersVip.map((user,index)=><img key={index} src={user.image} alt='imagem do usuario'/>)}
-        </C.donaters>}
+        {usersVip.length > 0 && (
+          <C.donaters>
+            {usersVip.map((user, index) => (
+                <img
+                  src={user.image}
+                  alt="usuarios"
+                />
+            ))}
+          </C.donaters>
+        )}
       </C.container>
     </>
   )

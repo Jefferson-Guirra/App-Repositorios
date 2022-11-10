@@ -1,35 +1,15 @@
-import { GetServerSideProps } from "next"
-import Head from "next/head"
-import * as C from './task'
-import { getSession } from "next-auth/react"
-import { Login } from "./index"
-import { getDoc,doc } from "firebase/firestore"
-import { db } from "../../services/firebaseConnection"
-import {
-  FiPlus,
-  FiCalendar,
-  FiEdit2,
-  FiTrash,
-  FiClock,
-  FiX
-} from 'react-icons/fi'
+import { GetServerSideProps } from 'next'
+import Head from 'next/head'
+import * as C from '../../styles/detalhes'
+import { getSession } from 'next-auth/react'
+import { Login } from '../../types/board'
+import { getDoc, doc } from 'firebase/firestore'
+import { db } from '../../services/firebaseConnection'
+import { Params, Props, TaskType } from '../../types/detailsType'
+import { FiCalendar } from 'react-icons/fi'
 
-type Params={
-  id:string
-}
-type Props = {
-  data: string 
-}
-type Task = {
-  id: string
-  created: string | Date
-  createdFormat?: string
-  tarefa: string
-  userId: string
-  nome: string
-}
-const Task = ({data}:Props)=>{
-  const task = JSON.parse(data) as Task
+const Task = ({ data }: Props) => {
+  const task = JSON.parse(data) as TaskType
   return (
     <>
       <Head>
@@ -51,38 +31,43 @@ const Task = ({data}:Props)=>{
 
 export default Task
 
-export const getServerSideProps:GetServerSideProps = async ({req,params})=>{
-  const {id} = params as  Params
-  const session = await getSession({req}) as Login | null
+export const getServerSideProps: GetServerSideProps = async ({
+  req,
+  params
+}) => {
+  const { id } = params as Params
+  const session = (await getSession({ req })) as Login | null
 
-  
-  if(!session?.vip){
-    return{
-      redirect:{
-        destination:'/board',
-        permanent:false
+  if (!session?.vip) {
+    return {
+      redirect: {
+        destination: '/board',
+        permanent: false
       }
     }
   }
 
   let data
-  const ref = doc(db, 'tarefas',id)
-  const docSnap = await  getDoc(ref)
-  
+  const ref = doc(db, 'tarefas', id)
+  const docSnap = await getDoc(ref)
+
   if (docSnap.exists()) {
-    data =docSnap.data()
+    data = docSnap.data()
     data.id = docSnap.id
     data = JSON.stringify(data)
   } else {
     // doc.data() will be undefined in this case
-    console.log('No such document!')
+    return {
+      redirect: {
+        destination: '/board',
+        permanent: false
+      }
+    }
   }
 
- 
-  return{
-    props:{
+  return {
+    props: {
       data
-
     }
   }
 }

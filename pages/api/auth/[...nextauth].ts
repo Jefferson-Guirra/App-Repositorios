@@ -4,6 +4,7 @@ import { db } from '../../../services/firebaseConnection'
 import { doc,getDoc} from 'firebase/firestore'
 const id = process.env.GITHUB_ID as string
 const secret = process.env.GITHUB_SECRET as string
+const secretJwt =process.env.SECRET_JWT as string
 
 type VipUser = {
   donate: boolean
@@ -23,23 +24,16 @@ export default NextAuth({
       
     })
   ],
+  secret:secretJwt,
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) {
       try {
         return true
       } catch (err) {
-        console.log('DEU ERRO', err)
+        console.log('ERRO:', err)
         return false
       }
     },
-    /*async jwt({ token, account, profile }) {
-    // Persist the OAuth access_token and or the user id to the token right after signin
-    if (account) {
-      token.accessToken = account.access_token
-      token.sub= profile?.sub
-    }
-    return token
-  },*/
     async session({ session, token, user }) {
       try {
       const refUser = doc(db, 'users', String(token.sub))

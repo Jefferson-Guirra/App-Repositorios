@@ -10,13 +10,18 @@ export const container = styled.main`
   align-items:center;
   justify:content:center;
 
-  img{
-    width:400px;
+  .img{
+    padding:none;
+    display:flex;
     margin-top:2rem;
+    align-items:center;
+    justiry:content:center;
+    height:300px;
   }
 
     h3{
-    margin-top:2rem;
+    margin-top:1.5rem;
+    margin-bottom:1.5rem;
   }
 `
 export const callToAction = styled.section`
@@ -48,18 +53,20 @@ export const donaters = styled.div`
   justify-content: center;
   flex-wrap: wrap;
   margin-bottom: 1.5rem;
-  gap:10px;
+  gap: 10px;
 
+  
   img {
     width: 65px;
     height: 65px;
     border-radius: 50%;
     border: 2px solid #141a29;
-    transition:.2s;
+    transition: 0.2s;
+    background-color:red;
   }
 
-  img:hover{
-    transform:scale(1.2)
+  img:hover {
+
+    transform: scale(1.2);
   }
-  
 `

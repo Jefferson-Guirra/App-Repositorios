@@ -3,18 +3,18 @@ import styled from "styled-components"
 export const container = styled.main`
   max-width: 1120px;
   margin: 0 auto;
-  padding: 0 3rem;
   min-height: calc(100vh - 6rem);
   display: flex;
   flex-direction: column;
   justify-content: center;
   text-align: center;
+  gap: 1rem;
 
   img {
     width: 100%;
   }
   .rocket {
-    width: 280px;
+    width: 300px;
     margin: 0 auto;
   }
   .vip {
@@ -25,6 +25,10 @@ export const container = styled.main`
     padding: 1rem;
     border-radius: 6px;
     background-color: #019950;
+    display: flex;
+    align-items: center;
+    justif-content: center;
+    gap: 5px;
 
     img {
       width: 50px;
@@ -36,7 +40,6 @@ export const container = styled.main`
   }
 
   h1 {
-    margin: 1rem 0;
     font-size: 2.3rem;
     display: flex;
     align-items: center;
@@ -51,7 +54,6 @@ export const container = styled.main`
   }
 
   h3 {
-    margin-bottom: 1rem;
     span {
       font-weight: bold;
       color: green;
@@ -67,7 +69,7 @@ export const container = styled.main`
     margin: 0 auto;
   }
   .paypal {
-    width: 150px;
+    width: 250px;
     margin: 0 auto;
   }
 `
