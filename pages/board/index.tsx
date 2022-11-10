@@ -226,14 +226,6 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
     }
   }
 
-  /* Obtendo uma coleção sem ordenar os dados
-  await getDocs(collection(db, 'tarefas')).then(querySnapshot => {
-    const newData = querySnapshot.docs.map(doc => ({
-      ...doc.data(),
-      id: doc.id
-    }))
-  })*/
-
   const ref = collection(db, 'tarefas')
 
   let list = JSON.stringify(
@@ -248,9 +240,6 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
     })
   )
 
-  /*const dataDonate = await getDoc(refUser)
-  const vipUser = dataDonate.data() as VipUser | undefined
-  const vip = vipUser?.donate ? vipUser?.donate : null*/
 
   const userLogin = {
     nome: session.user.name,
