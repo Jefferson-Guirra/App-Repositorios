@@ -57,10 +57,10 @@ export default function Home({donateUsers,githubSecret,urlApi,githubId,jwtSecret
 
 export const getStaticProps:GetStaticProps=async()=>{
   const ref = collection(db, 'users')
-  const githubSecret = process.env.GITHUB_SECRET
-  const urlApi = process.env.NEXTAUTH_URL
-  const githubId = process.env.GITHUB_ID
-  const jwtSecret = process.env.SECRET_JWT
+  const githubSecret = process.env.GITHUB_SECRET as string
+  const urlApi = process.env.NEXTAUTH_URL as string
+  const githubId = process.env.GITHUB_ID as string
+  const jwtSecret = process.env.SECRET_JWT as string
 
 
 
