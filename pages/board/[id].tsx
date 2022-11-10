@@ -8,7 +8,7 @@ import { db } from '../../services/firebaseConnection'
 import { Params, Props, TaskType } from '../../types/detailsType'
 import { FiCalendar } from 'react-icons/fi'
 
-const Task = ({ data }: Props) => {
+const Task = ({ data}: Props) => {
   const task = JSON.parse(data) as TaskType
   return (
     <>
@@ -67,7 +67,7 @@ export const getServerSideProps: GetServerSideProps = async ({
 
   return {
     props: {
-      data
+      data,
     }
   }
 }

@@ -7,7 +7,6 @@ import Image from 'next/image'
 
 export  const SignInButton = () => {
   const { data: session, status } = useSession()
-  
   return status === 'authenticated' ? (
     <C.button type="button" onClick={() => signOut()}>
       {session.user?.image &&<div>
