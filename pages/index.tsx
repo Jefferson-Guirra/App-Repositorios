@@ -73,10 +73,10 @@ export const getStaticProps:GetStaticProps=async()=>{
   return {
     props:{
       donateUsers,
-      urlApi,
-      githubSecret,
-      githubId,
-      jwtSecret
+      urlApi: urlApi ? urlApi:null,
+      githubSecret:githubSecret?githubSecret:null,
+      githubId:githubId?githubId:null,
+      jwtSecret:jwtSecret?jwtSecret:null
     },
     revalidate: 60*60 //ATUALIZA A CADA 60 MINUTOS
   }
