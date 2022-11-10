@@ -8,9 +8,10 @@ import { PayPalScriptProvider} from '@paypal/react-paypal-js'
 //liveId=AQ4-Jzoq6WQk60K_pvp_krV9qqnTFVtWppdFiwEa3tEOu01bZIXh4Ccd71OHr9GmU3wHHBvM9aAKKCNr
 
 //clientId=AcAcqRy0YXQo8w3nLKJBrwz7QUa14gmObIvRDEWI3Rhu_9Ua-8OSzn4tyHxBsv85X-i78aRBCoE9S7Gu
+
 const initialOptions = {
   'client-id':
-    'AQ4-Jzoq6WQk60K_pvp_krV9qqnTFVtWppdFiwEa3tEOu01bZIXh4Ccd71OHr9GmU3wHHBvM9aAKKCNr',
+    'AcAcqRy0YXQo8w3nLKJBrwz7QUa14gmObIvRDEWI3Rhu_9Ua-8OSzn4tyHxBsv85X-i78aRBCoE9S7Gu',
   currency: 'BRL',
   intent: 'capture'
 }
