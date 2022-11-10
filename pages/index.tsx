@@ -19,7 +19,7 @@ type Data = {
       lastDonate:Date,
       image:string
 }
-export default function Home({donateUsers,githubSecret,urlApi,githubId,jwtSecret}:Props) {
+export default function Home({donateUsers}:Props) {
   const usersVip:Data[] = JSON.parse(donateUsers)
   return (
     <>
@@ -47,20 +47,12 @@ export default function Home({donateUsers,githubSecret,urlApi,githubId,jwtSecret
           </C.donaters>
         )}
       </C.container>
-      <p>{githubSecret}</p>
-      <p>{urlApi}</p>
-      <p>id:{githubId}</p>
-      <p>{jwtSecret}</p>
     </>
   )
 }
 
 export const getStaticProps:GetStaticProps=async()=>{
   const ref = collection(db, 'users')
-  const githubSecret = process.env.GITHUB_SECRET as string
-  const urlApi = process.env.NEXTAUTH_URL as string
-  const githubId = process.env.GITHUB_ID as string
-  const jwtSecret = process.env.NEXTAUTH_SECRET as string
 
 
 
@@ -73,10 +65,6 @@ export const getStaticProps:GetStaticProps=async()=>{
   return {
     props:{
       donateUsers,
-      urlApi: urlApi ? urlApi:null,
-      githubSecret:githubSecret?githubSecret:null,
-      githubId:githubId?githubId:null,
-      jwtSecret:jwtSecret?jwtSecret:null
     },
     revalidate: 60*60 //ATUALIZA A CADA 60 MINUTOS
   }
