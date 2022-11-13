@@ -18,7 +18,7 @@ O site é composto por quatro seções:
 
 - **Home:** Aqui temos a apresentaçao do projeto;
 - **Board:** Nesta seção se encontra a lista completa de suas tarefas;
-- **Detalhes:** Apresenta os detalhes da tarefa escolheida;
+- **Detalhes:** Apresenta os detalhes da tarefa escolhida;
 - **Donate:** seção de doação;
 - **Obs**: Opção de edição e detalhes da tarefa inclusa somente a usuários vips( doaram ao projeto );
 
