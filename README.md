@@ -18,9 +18,9 @@ O site é composto por quatro seções:
 
 - **Home:** Aqui temos a apresentaçao do projeto;
 - **Board:** Nesta seção se encontra a lista completa de suas tarefas;
-- **Detalhes:**apresenta os detalhes da tarefa escolheida;
+- **Detalhes:** Apresenta os detalhes da tarefa escolheida;
 - **Donate:** seção de doação;
-- **Obs**: Opção de edição e detalhes da tarefa inclusa somente a usuarios vips( doaram ao projeto );
+- **Obs**: Opção de edição e detalhes da tarefa inclusa somente a usuários vips( doaram ao projeto );
 
 
 ---
@@ -31,7 +31,7 @@ O site é composto por quatro seções:
 O projeto possui funções de adição, edição e remoção de tarefa, login feito com github :
 
 - Next.js;
-- NextAuth.js( biblioteca para autenticação de usuario );
+- NextAuth.js( biblioteca para autenticação de usuário );
 - TypeScript ;
 - Styled-Components;
 - FireBase ( Armazenameto de dados );
