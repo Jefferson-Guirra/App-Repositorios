@@ -8,9 +8,6 @@ import { useState } from 'react'
 export const Header = ()=>{
   const [menuMob, setMenuMob] = useState(false)
 
-  console.log(menuMob)
-
-
   return (
     <C.headerContainer>
       <C.headerContent>
