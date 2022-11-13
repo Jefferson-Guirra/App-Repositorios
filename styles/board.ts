@@ -149,4 +149,10 @@ export const vipContainer = styled.div`
       font-size: 1.4rem;
     }
   }
+
+  @media (max-width: 40rem) {
+    h3 {
+      font-size: 1.5rem;
+    }
+  }
 `
