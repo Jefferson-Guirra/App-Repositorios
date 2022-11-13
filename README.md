@@ -31,7 +31,7 @@ O site é composto por quatro seções:
 O projeto possui funções de adição, edição e remoção de tarefa, login feito com github :
 
 - Next.js;
-- NextAuth.js( biblioteca para autenticação de usuário );
+- NextAuth.js ( biblioteca para autenticação de usuário );
 - TypeScript ;
 - Styled-Components;
 - FireBase ( Armazenameto de dados );
