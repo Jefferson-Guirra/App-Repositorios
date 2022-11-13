@@ -42,7 +42,7 @@ export default function Home({donateUsers}:Props) {
         {usersVip.length > 0 && (
           <C.donaters>
             {usersVip.map((user, index) => (
-              <img src={user.image} alt="usuarios" />
+              <img key={index} src={user.image} alt="usuarios" />
             ))}
           </C.donaters>
         )}

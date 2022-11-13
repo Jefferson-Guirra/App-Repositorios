@@ -8,6 +8,8 @@ import { useState } from 'react'
 export const Header = ()=>{
   const [menuMob, setMenuMob] = useState(false)
 
+  console.log(menuMob)
+
 
   return (
     <C.headerContainer>
@@ -28,8 +30,12 @@ export const Header = ()=>{
         </C.hamburguer>
         <C.actions activeMenu={menuMob}>
           <nav>
-            <Link href="/">Home</Link>
-            <Link href="/board">Meu board</Link>
+            <Link href="/">
+              <a onClick={() => setMenuMob(state => !state)}>Home</a>
+            </Link>
+            <Link  href="/board">
+              <a onClick={() => setMenuMob(state => !state)}>Meu Board</a>
+            </Link>
           </nav>
           <SignInButton />
         </C.actions>
