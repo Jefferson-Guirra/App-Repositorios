@@ -62,7 +62,6 @@ export const donaters = styled.div`
     border-radius: 50%;
     border: 2px solid #141a29;
     transition: 0.2s;
-    background-color:red;
   }
 
   img:hover {

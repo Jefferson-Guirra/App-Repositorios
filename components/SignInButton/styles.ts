@@ -1,5 +1,7 @@
 import styled from "styled-components";
 
+
+
 export const button = styled.button`
   color: #fff;
   height: 2.5rem;
@@ -37,3 +39,4 @@ export const button = styled.button`
     margin-left: 1rem;
   }
 `
+
