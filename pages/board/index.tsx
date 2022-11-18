@@ -98,9 +98,9 @@ const Board = ({ userLogin, list }: Props) => {
       }
       setTaskList([...taskList, data])
       setInput('')
-      console.log('Cadastrado com sucesso', docRef.id)
+      console.log('Cadastrado com sucesso')
     } catch (e) {
-      console.log('error ao cadastrar ', e)
+      console.log('error ao cadastrar ')
     }
   }
   const validate = (value: string) => {
@@ -114,7 +114,7 @@ const Board = ({ userLogin, list }: Props) => {
   const handleDelete = async (id: string) => {
     try {
       await deleteDoc(doc(db, 'tarefas', id))
-      console.log('item deletado', id)
+      console.log('item deletado')
       const deleteTaskList = taskList.filter(item => item.id !== id)
       setTaskList(deleteTaskList)
     } catch (err) {

@@ -76,7 +76,7 @@ const donate = ({ user }: Props) => {
             onApprove={async (data, actions) => {
               return actions.order?.capture().then(function (details) {
                 console.log(
-                  'Compra aprovada: ' + details.payer.name?.given_name
+                  'Compra aprovada: '
                 )
                 handleSaveDonate()
               })

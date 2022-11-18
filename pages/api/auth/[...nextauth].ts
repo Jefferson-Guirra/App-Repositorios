@@ -26,7 +26,7 @@ export default NextAuth({
       try {
         return true
       } catch (err) {
-        console.log('ERRO:', err)
+        console.log('ERRO:')
         return false
       }
     },
