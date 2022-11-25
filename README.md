@@ -7,11 +7,9 @@
 
 <br>
     > Uma ferramenta para o seu dia a dia Escreva planeje organize-se...
-   
- <h4 align="center"><a href="https://meu-app-board.herokuapp.com/" target="_blank">Clique para visitar o projeto</a></h4>
-
-
 <br>
+    
+<h4 align="center"><a href="https://meu-app-board.herokuapp.com/" target="_blank">Clique para visitar o projeto</a></h4>
 
 
 ## 📚 Seções
